@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestOrderRepository {
+public class OrderRepositoryTests {
 
     private final OrderRepository orderRepository = new OrderRepository();
 
