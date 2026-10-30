@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CreateOrderRequestTests {
 
     @Test
-    public void createOrderRequestWithSuccess() {
+    public void createOrderRequest_WithSuccess() {
         String item = "Validate if is possible to create an order request";
         CreateOrderRequest orderRequest = new CreateOrderRequest(
                 item,
@@ -18,7 +18,7 @@ public class CreateOrderRequestTests {
     }
 
     @Test
-    public void createOrderRequestWithItemAsNull() {
+    public void createOrderRequest_WithItemAsNull_ThrowsIllegalArgumentException() {
         assertThrowsExactly(
                 IllegalArgumentException.class,
                 () -> new CreateOrderRequest(
@@ -29,7 +29,7 @@ public class CreateOrderRequestTests {
     }
 
     @Test
-    public void createOrderRequestWithItemAsEmptyString() {
+    public void createOrderRequest_WithItemAsEmptyString_ThrowsIllegalArgumentException() {
         assertThrowsExactly(
                 IllegalArgumentException.class,
                 () -> new CreateOrderRequest(
@@ -40,7 +40,7 @@ public class CreateOrderRequestTests {
     }
 
     @Test
-    public void createOrderRequestWithQuantityLowerThanOne() {
+    public void createOrderRequest_WithQuantityLowerThanOne_ThrowsIllegalArgumentException() {
         String item = "Validate if is not possible to create an order request with quantity lower than 1";
         assertThrowsExactly(
                 IllegalArgumentException.class,
