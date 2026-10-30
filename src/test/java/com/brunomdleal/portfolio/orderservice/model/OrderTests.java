@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestOrder {
+public class OrderTests {
 
     @Test
-    public void createAFullOrderWithSuccess() {
+    public void createOrder_WithAllArguments_WithSuccess() {
         String orderId = UUID.randomUUID().toString();
         String orderItem = "Validate if is possible to create an order with all the arguments";
         Order order = new Order(
@@ -26,7 +26,7 @@ public class TestOrder {
     }
 
     @Test
-    public void createAnOrderOnlyWithItemAndQuantityWithSuccess() {
+    public void createOrder_OnlyWithItemAndQuantity_WithSuccess() {
         String orderItem = "Validate if is possible to create an order with just the item and quantity arguments";
         Order order = new Order(
                 orderItem,
@@ -40,7 +40,7 @@ public class TestOrder {
     }
 
     @Test
-    public void notPossibleToCreateAnOrderWithQuantityLowerThanOne() {
+    public void createOrder_WithQuantityLowerThanOne_ThrowsIllegalArgumentException() {
         String orderItem = "Validate if is not possible to create an order with quantity lower than 1";
         assertThrowsExactly(
                 IllegalArgumentException.class,
