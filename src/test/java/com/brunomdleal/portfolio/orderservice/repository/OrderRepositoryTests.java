@@ -10,18 +10,18 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestOrderRepository {
+public class OrderRepositoryTests {
 
     private final OrderRepository orderRepository = new OrderRepository();
 
     @Test
-    public void saveWithSuccess() {
+    public void save_WithSuccess() {
         Order order = new Order("Order to check if the save method works", 1);
         assertEquals(order, orderRepository.save(order));
     }
 
     @Test
-    public void findAllWithSuccess() {
+    public void findAll_WithSuccess() {
         List<Order> allOrders = saveMultipleOrders(3, "Order to check if the findAll method works.");
         List<Order> result = orderRepository.findAll();
         assertEquals(3, result.size());
@@ -29,7 +29,7 @@ public class TestOrderRepository {
     }
 
     @Test
-    public void findByWithSuccess() {
+    public void findBy_WithSuccess() {
         saveMultipleOrders(3, "Order to check if the findBy method works.");
         assertEquals(
                 generateOrder(1, "Order to check if the findBy method works."),
@@ -38,7 +38,7 @@ public class TestOrderRepository {
     }
 
     @Test
-    public void findByWithNonExistentId() {
+    public void findBy_WithNonExistentId_ThrowsNoSuchElementException() {
         saveMultipleOrders(2, "Order to check if the findBy method works.");
         assertThrowsExactly(NoSuchElementException.class, () -> orderRepository.findById("4").orElseThrow());
     }
