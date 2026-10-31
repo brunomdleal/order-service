@@ -17,6 +17,9 @@ jobs:
   build-and-verify:
     runs-on: ubuntu-latest
     name: Build and verify
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Clone project
         id: clone_project
@@ -49,3 +52,10 @@ jobs:
           image-ref: 'order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}'
           severity: 'HIGH,CRITICAL'
           exit-code: 1
+      - name: Login into the Github Container Registry
+        id: github_container_registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
