@@ -1,0 +1,33 @@
+name: delivery-pipeline.yml
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    name: Build and verify
+    permissions:
+      pull-requests: none
+    steps:
+      - name: Clone project
+        id: clone_project
+        uses: actions/checkout@v7
+      - name: Configure JDK 21 & Maven cache
+        id: jdk_21_maven_cache
+        uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Make wrapper executable
+        id: mvn_wrapper
+        run: chmod +x ./mvnw
+      - name: Run Maven verify
+        id: mvn_packager
+        run: ./mvnw clean verify
