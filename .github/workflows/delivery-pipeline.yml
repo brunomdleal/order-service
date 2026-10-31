@@ -16,7 +16,6 @@ env:
 jobs:
   build-and-verify:
     runs-on: ubuntu-latest
-
     name: Build and verify
     steps:
       - name: Clone project
@@ -39,6 +38,6 @@ jobs:
         id: build_docker_images
         run: >
           docker build
-          -t order-service:$VERSION_PREFIX${{ github.run_number }}
-          -t ghcr.io/${ACTOR,,}/order-service:$VERSION_PREFIX${{ github.run_number }}
+          -t order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
+          -t ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
           .
