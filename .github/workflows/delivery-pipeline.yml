@@ -41,3 +41,11 @@ jobs:
           -t order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
           -t ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
           .
+      - name: Integrate Aqua Security Trivy Scan
+        id: trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'image'
+          image-ref: 'order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}'
+          severity: 'HIGH,CRITICAL'
+          exit-code: 1
