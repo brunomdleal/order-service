@@ -17,8 +17,19 @@ COPY src/ ./src
 ### COMPILE THE CODE ###
 RUN ./mvnw clean package -DskipTests
 
-#### SWITCH TO UNPRIVILEGED USER ###
-## Add unprivileged user
-#RUN adduser appUser
-## Switch to created user
-#USER appUser
+FROM eclipse-temurin:21-jre-alpine AS runner
+
+### MOVE TO THE FOLDER "/app" ###
+WORKDIR /app
+
+### ADD UNPRIVILEGED USER WITHOUT PASSWORD (-D)###
+RUN adduser appUser -D
+
+### COPY JAR FILE FROM BUILDER ###
+COPY --chown=appUser:appUser --from=builder /app/target/*.jar ./app.jar
+
+### SWITCH TO ADDED USER ###
+USER appUser
+
+### SET ENTRYPOINT ###
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-jar", "app.jar"]
