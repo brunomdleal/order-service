@@ -37,7 +37,8 @@ jobs:
         run: ./mvnw clean verify
       - name: Build docker images
         id: build_docker_images
-        run: docker build \
-          -t order-service:$VERSION_PREFIX${{ github.run_number }} \
-          -t ghcr.io/${ACTOR,,}/order-service:$VERSION_PREFIX${{ github.run_number }} \
+        run: >
+          docker build
+          -t order-service:$VERSION_PREFIX${{ github.run_number }}
+          -t ghcr.io/${ACTOR,,}/order-service:$VERSION_PREFIX${{ github.run_number }}
           .
