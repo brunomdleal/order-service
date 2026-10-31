@@ -8,12 +8,16 @@ on:
     branches:
       - main
       - master
+
+env:
+  VERSION_PREFIX: 0.0.
+  ACTOR: ${{ github.actor }}
+
 jobs:
   build-and-verify:
     runs-on: ubuntu-latest
+
     name: Build and verify
-    permissions:
-      pull-requests: none
     steps:
       - name: Clone project
         id: clone_project
@@ -31,3 +35,9 @@ jobs:
       - name: Run Maven verify
         id: mvn_packager
         run: ./mvnw clean verify
+      - name: Build docker images
+        id: build_docker_images
+        run: docker build \
+          -t order-service:$VERSION_PREFIX${{ github.run_number }} \
+          -t ghcr.io/${ACTOR,,}/order-service:$VERSION_PREFIX${{ github.run_number }} \
+          .
