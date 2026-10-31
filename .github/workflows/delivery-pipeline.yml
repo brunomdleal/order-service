@@ -59,3 +59,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image to GHCR
+        id: push_to_github_container_registry
+        if: github.ref_name == 'master'
+        run: docker push ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
