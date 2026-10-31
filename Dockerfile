@@ -5,7 +5,7 @@ WORKDIR /app
 
 ### COPY BUILD CONFIG FILES TO THE CONTAINER ###
 COPY pom.xml .
-COPY ./mvn ./mvn
+COPY .mvn/ .mvn
 COPY mvnw* .
 
 ### DOWNLOAD DEPENDENCIES ###
