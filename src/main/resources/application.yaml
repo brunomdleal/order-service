@@ -1,0 +1,56 @@
+# Exposes the springboot actuator's `/actuator/health` and `/actuator/info`
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+spring:
+  # Identifies this microservice in logs, metrics, traces, and service-to-service communication.
+  application:
+    name: order-service
+
+  datasource:
+    # Specifies the JDBC connection string to the PostgreSQL database
+    # Reads the SPRING_DATASOURCE_URL environment variable at runtime (e.g. in Compose/K8s)
+    # If SPRING_DATASOURCE_URL environment variable is not present, falls back to localhost:5432/orderdb
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/orderdb}
+    # Database username credential.
+    # Reads the SPRING_DATASOURCE_USERNAME environment variable at runtime (e.g. in Compose/K8s)
+    # If SPRING_DATASOURCE_USERNAME environment variable is not present, falls back to orderuser.
+    username: ${SPRING_DATASOURCE_USERNAME:orderuser}
+    # Database password credential.
+    # Reads the SPRING_DATASOURCE_PASSWORD environment variable at runtime (e.g. in Compose/K8s)
+    # If SPRING_DATASOURCE_PASSWORD environment variable is not present, falls back to orderpass.
+    password: ${SPRING_DATASOURCE_PASSWORD:orderpass}
+    # Instructs HikariCP (the connection pool) to translate from JDBC to PostgreSQL
+    # Uses PostgreSQL's native JDBC driver.
+    # JDBC == Java Database Connectivity
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # DDL == Data Definition Language
+      # Critical Schema Guardrail: Prevents Hibernate from altering or creating tables.
+      # It validates that the schema existing within the Flyway file matches the class "schema"
+      ddl-auto: validate
+    # Disables Spring's "Open Session In View" pattern.
+    # Prevents database connections from staying open during HTTP response serialization
+    # Eliminates lazy-initialization database leaks.
+    # Only enables the DB connection when there is a transaction to be made
+    open-in-view: false
+    # Disables raw SQL dumping to STDOUT so production logs are not cluttered with noisy queries.
+    show-sql: false
+    properties:
+      hibernate:
+        # Formats generated SQL into multiline readable statements when debug logging is active.
+        format_sql: true
+
+  flyway:
+    # Tells Spring Boot that we are using Flyway database migrations
+    enabled: true
+    # Creates Flyway's tracking table (flyway_schema_history) automatically
+    # This happens only if it is running against an existing database without prior migration history.
+    baseline-on-migrate: true
+    # Explicitly defines the folder where Flyway looks for V*__*.sql scripts
+    locations: classpath:db/migration
