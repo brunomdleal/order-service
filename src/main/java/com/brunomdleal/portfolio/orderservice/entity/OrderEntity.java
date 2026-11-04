@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +30,7 @@ public class OrderEntity {
     private OrderStatus status;
 
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-    private UUID createdAt;
+    private Instant createdAt;
 
     protected OrderEntity() {
 //        Required by JPA/Hibernate reflection
@@ -44,8 +45,14 @@ public class OrderEntity {
 
     //    Converts the model `Order` into a persistence entity
     public static OrderEntity fromDomain(Order order) {
+        UUID id;
+        try {
+            id = order.id() != null ? UUID.fromString(order.id()) : UUID.randomUUID();
+        } catch (IllegalArgumentException e) {
+            id = UUID.randomUUID();
+        }
         return new OrderEntity(
-                order.id() != null ? UUID.fromString(order.id()) : UUID.randomUUID(),
+                id,
                 order.item(),
                 order.quantity(),
                 order.status()
