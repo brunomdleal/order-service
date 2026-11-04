@@ -1,5 +1,8 @@
 FROM eclipse-temurin:21-jdk-alpine AS builder
 
+# Upgrade OS packages to pull upstream security patches (e.g. libexpat >= 2.10.0-r0)
+RUN apk update && apk upgrade --no-cache
+
 ### MOVE TO THE FOLDER "/app" ###
 WORKDIR /app
 
@@ -18,6 +21,9 @@ COPY src/ ./src
 RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine AS runner
+
+# Upgrade OS packages to pull upstream security patches (e.g. libexpat >= 2.10.0-r0)
+RUN apk update && apk upgrade --no-cache
 
 ### MOVE TO THE FOLDER "/app" ###
 WORKDIR /app
