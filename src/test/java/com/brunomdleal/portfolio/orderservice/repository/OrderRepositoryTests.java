@@ -1,7 +1,6 @@
 package com.brunomdleal.portfolio.orderservice.repository;
 
 import com.brunomdleal.portfolio.orderservice.entity.OrderEntity;
-import com.brunomdleal.portfolio.orderservice.enums.OrderStatus;
 import com.brunomdleal.portfolio.orderservice.model.Order;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static java.util.stream.IntStream.rangeClosed;
+import static com.brunomdleal.portfolio.orderservice.utils.OrderCreator.generateOrder;
+import static com.brunomdleal.portfolio.orderservice.utils.OrderCreator.generateOrders;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -103,15 +103,5 @@ public class OrderRepositoryTests {
     public void findByID_WithInvalidId_ReturnsEmptyOptional() {
         assertTrue(orderRepository.findById("InvalidID").isEmpty());
         verifyNoMoreInteractions(jpaRepository);
-    }
-
-    private List<Order> generateOrders(int number, String item) {
-        return rangeClosed(1, number)
-                .mapToObj(i -> generateOrder(UUID.randomUUID().toString(), i, item))
-                .toList();
-    }
-
-    private Order generateOrder(String id, int number, String item) {
-        return new Order(id, item + " #" + number, number, OrderStatus.CONFIRMED);
     }
 }
