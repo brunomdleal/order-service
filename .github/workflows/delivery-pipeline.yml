@@ -10,7 +10,7 @@ on:
       - master
 
 env:
-  VERSION_PREFIX: 0.0.
+  VERSION_PREFIX: 0.1.
   ACTOR: ${{ github.actor }}
 
 jobs:
