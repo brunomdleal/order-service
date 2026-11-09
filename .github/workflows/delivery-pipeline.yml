@@ -43,6 +43,7 @@ jobs:
           docker build
           -t order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
           -t ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
+          -t ghcr.io/${ACTOR,,}/order-service:latest
           .
       - name: Integrate Aqua Security Trivy Scan
         id: trivy
@@ -62,4 +63,6 @@ jobs:
       - name: Push image to GHCR
         id: push_to_github_container_registry
         if: github.ref_name == 'master'
-        run: docker push ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
+        run: |
+          docker push ghcr.io/${ACTOR,,}/order-service:${{ env.VERSION_PREFIX }}${{ github.run_number }}
+          docker push ghcr.io/${ACTOR,,}/order-service:latest
